@@ -1,10 +1,8 @@
-import { formatRelativeDate } from '../text-formatters.js'
+import { formatRelativeDate } from '../date.js'
 import { BaseService, pathParams } from '../index.js'
 
 const description = `
-<p>
-  Supply a unix timestamp in seconds to display the relative time from/to now
-</p>
+Supply a unix timestamp in seconds to display the relative time from/to now
 `
 
 export default class Date extends BaseService {

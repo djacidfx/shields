@@ -1,9 +1,11 @@
 import Joi from 'joi'
 import { BaseJsonService, pathParam, queryParam } from '../index.js'
+import { renderSizeBadge } from '../size.js'
+import { nonNegativeInteger } from '../validators.js'
 
 const schema = Joi.object({
   size: Joi.object({
-    compressedSize: Joi.string().required(),
+    rawCompressedSize: nonNegativeInteger,
   }).required(),
 }).required()
 
@@ -19,9 +21,7 @@ const bundlejs =
   '<a href="https://bundlejs.com/" target="_blank" rel="noopener">bundlejs</a>'
 
 const description = `
-<p>
- View ${esbuild} minified and ${denoflate} gzipped size of a javascript package or selected exports, via ${bundlejs}.
-</p>
+View ${esbuild} minified and ${denoflate} gzipped size of a javascript package or selected exports, via ${bundlejs}.
 `
 
 export default class BundlejsPackage extends BaseJsonService {
@@ -78,13 +78,6 @@ export default class BundlejsPackage extends BaseJsonService {
 
   static defaultBadgeData = { label: 'bundlejs', color: 'informational' }
 
-  static render({ size }) {
-    return {
-      label: 'minified size (gzip)',
-      message: size,
-    }
-  }
-
   async fetch({ scope, packageName, exports }) {
     const searchParams = {
       q: `${scope ? `${scope}/` : ''}${packageName}`,
@@ -112,7 +105,7 @@ export default class BundlejsPackage extends BaseJsonService {
 
   async handle({ scope, packageName }, { exports }) {
     const json = await this.fetch({ scope, packageName, exports })
-    const size = json.size.compressedSize
-    return this.constructor.render({ size })
+    const size = json.size.rawCompressedSize
+    return renderSizeBadge(size, 'metric', 'minified size (gzip)')
   }
 }
