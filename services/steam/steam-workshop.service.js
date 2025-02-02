@@ -1,21 +1,17 @@
 import Joi from 'joi'
-import prettyBytes from 'pretty-bytes'
+import { renderDateBadge } from '../date.js'
+import { renderSizeBadge } from '../size.js'
 import { renderDownloadsBadge } from '../downloads.js'
-import { metric, formatDate } from '../text-formatters.js'
-import { age as ageColor } from '../color-formatters.js'
+import { metric } from '../text-formatters.js'
 import { NotFound, pathParams } from '../index.js'
 import BaseSteamAPI from './steam-base.js'
 
 const description = `
-<p>
-  Using a web browser, you can find the ID in the url here:
-</p>
+Using a web browser, you can find the ID in the url here:
 <img
   src="https://user-images.githubusercontent.com/6497721/46358801-1bcb3200-c668-11e8-9963-931397853945.PNG"
   alt="The ID is the number found right after ?id= in the URI" />
-<p>
-  In the steam client you can simply just Right-Click and 'Copy Page URL' and follow the above step
-</p>
+In the steam client you can simply just Right-Click and 'Copy Page URL' and follow the above step
 <img
   src="https://user-images.githubusercontent.com/7288322/46567027-27c83400-c987-11e8-9850-ab67d987202f.png"
   alt="Right-Click and 'Copy Page URL'" />
@@ -212,12 +208,8 @@ class SteamFileSize extends SteamFileService {
     label: 'size',
   }
 
-  static render({ fileSize }) {
-    return { message: prettyBytes(fileSize), color: 'informational' }
-  }
-
   async onRequest({ response }) {
-    return this.constructor.render({ fileSize: response.file_size })
+    return renderSizeBadge(response.file_size, 'metric')
   }
 }
 
@@ -246,13 +238,9 @@ class SteamFileReleaseDate extends SteamFileService {
     label: 'release date',
   }
 
-  static render({ releaseDate }) {
-    return { message: formatDate(releaseDate), color: ageColor(releaseDate) }
-  }
-
   async onRequest({ response }) {
     const releaseDate = new Date(0).setUTCSeconds(response.time_created)
-    return this.constructor.render({ releaseDate })
+    return renderDateBadge(releaseDate)
   }
 }
 
@@ -281,13 +269,9 @@ class SteamFileUpdateDate extends SteamFileService {
     label: 'update date',
   }
 
-  static render({ updateDate }) {
-    return { message: formatDate(updateDate), color: ageColor(updateDate) }
-  }
-
   async onRequest({ response }) {
     const updateDate = new Date(0).setUTCSeconds(response.time_updated)
-    return this.constructor.render({ updateDate })
+    return renderDateBadge(updateDate)
   }
 }
 

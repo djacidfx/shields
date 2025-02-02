@@ -16,7 +16,12 @@ import { makeSend } from '../base-service/legacy-result-sender.js'
 import { handleRequest } from '../base-service/legacy-request-handler.js'
 import { clearResourceCache } from '../base-service/resource-cache.js'
 import { rasterRedirectUrl } from '../badge-urls/make-badge-url.js'
-import { fileSize, nonNegativeInteger } from '../../services/validators.js'
+import {
+  fileSize,
+  nonNegativeInteger,
+  optionalUrl,
+  url as requiredUrl,
+} from '../../services/validators.js'
 import log from './log.js'
 import PrometheusMetrics from './prometheus-metrics.js'
 import InfluxMetrics from './influx-metrics.js'
@@ -54,8 +59,6 @@ const Joi = originalJoi
     },
   }))
 
-const optionalUrl = Joi.string().uri({ scheme: ['http', 'https'] })
-const requiredUrl = optionalUrl.required()
 const origins = Joi.arrayFromString().items(Joi.string().origin())
 const defaultService = Joi.object({ authorizedOrigins: origins }).default({
   authorizedOrigins: [],
@@ -139,6 +142,9 @@ const publicConfigSchema = Joi.object({
     nexus: defaultService,
     npm: defaultService,
     obs: defaultService,
+    pypi: {
+      baseUri: requiredUrl,
+    },
     sonar: defaultService,
     teamcity: defaultService,
     weblate: defaultService,
@@ -165,6 +171,8 @@ const privateConfigSchema = Joi.object({
   azure_devops_token: Joi.string(),
   curseforge_api_key: Joi.string(),
   discord_bot_token: Joi.string(),
+  dockerhub_username: Joi.string(),
+  dockerhub_pat: Joi.string(),
   drone_token: Joi.string(),
   gh_client_id: Joi.string(),
   gh_client_secret: Joi.string(),
@@ -189,6 +197,8 @@ const privateConfigSchema = Joi.object({
   opencollective_token: Joi.string(),
   pepy_key: Joi.string(),
   postgres_url: Joi.string().uri({ scheme: 'postgresql' }),
+  reddit_client_id: Joi.string(),
+  reddit_client_secret: Joi.string(),
   sentry_dsn: Joi.string(),
   sl_insight_userUuid: Joi.string(),
   sl_insight_apiToken: Joi.string(),
@@ -198,7 +208,6 @@ const privateConfigSchema = Joi.object({
   teamcity_pass: Joi.string(),
   twitch_client_id: Joi.string(),
   twitch_client_secret: Joi.string(),
-  wheelmap_token: Joi.string(),
   influx_username: Joi.string(),
   influx_password: Joi.string(),
   weblate_api_key: Joi.string(),
@@ -536,9 +545,12 @@ class Server {
       }
     }
 
-    // https://github.com/badges/shields/issues/3273
     camp.handle((req, res, next) => {
+      // https://github.com/badges/shields/issues/3273
       res.setHeader('Access-Control-Allow-Origin', '*')
+      // https://github.com/badges/shields/issues/10419
+      res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin')
+
       next()
     })
 

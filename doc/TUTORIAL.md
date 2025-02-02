@@ -71,7 +71,7 @@ Each service has a directory for its files:
     `/services/example/example.service.js`.
     If you add a badge for a new API, create a new directory.
 
-    Example: [wercker](https://github.com/badges/shields/tree/master/services/wercker)
+    Example: [Docs.rs](https://github.com/badges/shields/tree/master/services/docsrs)
 
   - For service families with multiple badges we usually store the code for each
     badge in its own file like this:
@@ -349,8 +349,6 @@ export default class GemVersion extends BaseJsonService {
 Save, run `npm start`, and you can see it [locally](http://127.0.0.1:3000/).
 
 If you update `openApi`, you don't have to restart the server. Run `npm run prestart` in another terminal window and the frontend will update.
-
-Note: Some services define this information in an array property called `examples`. This is deprecated and we're in the process of converting them. New services should declare an `openApi` object.
 
 ### (4.5) Write Tests<!-- Change the link below when you change the heading -->
 
