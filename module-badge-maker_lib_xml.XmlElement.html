@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: services/deps-rs/deps-rs-base.js</title>
+    <title>JSDoc: Class: XmlElement</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,103 +17,450 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: services/deps-rs/deps-rs-base.js</h1>
+    <h1 class="page-title">Class: XmlElement</h1>
 
     
 
 
 
+
+<section>
+
+<header>
     
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>import Joi from 'joi'
-import { BaseJsonService } from '../index.js'
+        <h2><span class="attribs"><span class="type-signature"></span></span>
+            <span class="ancestors"><a href="module-badge-maker_lib_xml.html">badge-maker/lib/xml</a>.</span>XmlElement<span class="signature">(attrs)</span><span class="type-signature"></span></h2>
+        
+            <div class="class-description"><p>Representation of an XML element</p></div>
+        
+    
+</header>
 
-const depsResponseSchema = Joi.object({
-  message: Joi.string().required(),
-}).required()
+<article>
+    <div class="container-overview">
+    
+        
 
-class BaseDepsRsService extends BaseJsonService {
-  static defaultBadgeData = { label: 'dependencies' }
+    
+    <h2>Constructor</h2>
+    
 
-  /**
-   * Maps message values to shields color scheme
-   *
-   * @param {string} message - The message to help determine appropriate color
-   * @returns {string} The shields color
-   */
-  static mapColor(message) {
-    const normalizedMessage = message.toLowerCase()
+    
+    <h4 class="name" id="XmlElement"><span class="type-signature"></span>new XmlElement<span class="signature">(attrs)</span><span class="type-signature"></span></h4>
+    
 
-    const colorMap = {
-      'up to date': 'brightgreen',
-      none: 'brightgreen',
-      'maybe insecure': 'yellowgreen',
-      insecure: 'red',
-      unknown: 'lightgrey',
-      'not found': 'lightgrey',
-      invalid: 'lightgrey',
-    }
+    
 
-    if (colorMap[normalizedMessage]) {
-      return colorMap[normalizedMessage]
-    }
 
-    // e.g. "1 of 2 outdated"
-    if (normalizedMessage.endsWith('outdated')) {
-      return 'yellow'
-    }
 
-    return 'lightgrey'
-  }
+<div class="description">
+    <p>Xml Element Constructor</p>
+</div>
 
-  /**
-   * Fetches data from the deps.rs API.
-   *
-   * @param {object} options - The options for the request
-   * @param {string} options.crate - The crate name.
-   * @param {string} options.version - The crate version number or 'latest'.
-   * @returns {Promise&lt;object>} the JSON response from the API.
-   */
-  async fetchCrate({ crate, version }) {
-    const url = `https://deps.rs/crate/${crate}/${version}/shield.json`
-    return this._requestJson({
-      schema: depsResponseSchema,
-      url,
-      httpErrors: {
-        404: 'not found',
-      },
-    })
-  }
 
-  /**
-   * Fetches data from the deps.rs API for a repository.
-   *
-   * @param {object} options - The options for the request
-   * @param {string} options.site - The repository site (e.g., 'github').
-   * @param {string} options.user - The repository owner/user.
-   * @param {string} options.repo - The repository name.
-   * @returns {Promise&lt;object>} the JSON response from the API.
-   */
-  async fetchRepo({ site, user, repo }) {
-    const url = `https://deps.rs/repo/${site}/${user}/${repo}/shield.json`
-    return this._requestJson({
-      schema: depsResponseSchema,
-      url,
-      httpErrors: {
-        404: 'unknown',
-      },
-    })
-  }
-}
 
-const description =
-  '[Deps.rs](https://deps.rs/) is a service that checks dependency security status in Rust projects.'
 
-export { BaseDepsRsService, description }
-</code></pre>
-        </article>
-    </section>
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>attrs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Refer to individual attrs</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>Name of the XML tag</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>content</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;(string|module:badge-maker/lib/xml~XmlElement)></span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    []
+                
+                </td>
+            
+
+            <td class="description last"><p>Array of objects to render inside the tag. content may contain a mix of
+string and XmlElement objects. If content is <code>[]</code> or omitted the
+element will be rendered as a self-closing element.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>attrs</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    {}
+                
+                </td>
+            
+
+            <td class="description last"><p>Object representing the tag's attributes as name/value pairs</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="badge-maker_lib_xml.js.html">badge-maker/lib/xml.js</a>, <a href="badge-maker_lib_xml.js.html#line27">line 27</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="render"><span class="type-signature"></span>render<span class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    <p>Render the XML element to a string, applying appropriate escaping</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="badge-maker_lib_xml.js.html">badge-maker/lib/xml.js</a>, <a href="badge-maker_lib_xml.js.html#line52">line 52</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>String representation of the XML element</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">string</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 
