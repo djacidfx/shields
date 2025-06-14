@@ -39,8 +39,8 @@
     "decamelize": "^3.2.0",
     "emojic": "^1.1.18",
     "escape-string-regexp": "^4.0.0",
-    "fast-xml-parser": "^5.2.3",
-    "glob": "^11.0.2",
+    "fast-xml-parser": "^5.2.5",
+    "glob": "^11.0.3",
     "global-agent": "^3.0.0",
     "got": "^14.4.7",
     "graphql": "16.11.0",
@@ -64,7 +64,7 @@
     "query-string": "^9.2.0",
     "re2": "^1.22.1",
     "semver": "~7.7.2",
-    "simple-icons": "15.0.0",
+    "simple-icons": "15.1.0",
     "smol-toml": "1.3.4",
     "svg-path-bbox": "^2.1.0",
     "svgpath": "^2.6.0",
@@ -100,7 +100,7 @@
     "pretest": "cross-env BASE_URL=http://localhost:8080 run-s --silent defs",
     "test": "run-s --silent --continue-on-error lint test:package test:core test:entrypoint check-types:package prettier:check",
     "check-types:package": "tsd badge-maker",
-    "depcheck": "check-node-version --node \">= 20.0\"",
+    "depcheck": "check-node-version --node \"^22\"",
     "prebuild": "run-s --silent depcheck",
     "defs": "node scripts/export-openapi-cli.js",
     "build": "rimraf public && run-s defs docusaurus:build",
@@ -148,9 +148,9 @@
     ]
   },
   "devDependencies": {
-    "@docusaurus/core": "^3.8.0",
-    "@docusaurus/preset-classic": "^3.8.0",
-    "@easyops-cn/docusaurus-search-local": "^0.50.0",
+    "@docusaurus/core": "^3.8.1",
+    "@docusaurus/preset-classic": "^3.8.1",
+    "@easyops-cn/docusaurus-search-local": "^0.51.0",
     "@mdx-js/react": "^3.1.0",
     "@typescript-eslint/parser": "^8.33.1",
     "c8": "^10.1.3",
@@ -187,7 +187,7 @@
     "lint-staged": "^16.1.0",
     "lodash.difference": "^4.5.0",
     "minimist": "^1.2.8",
-    "mocha": "^11.5.0",
+    "mocha": "^11.6.0",
     "mocha-env-reporter": "^4.0.0",
     "mocha-junit-reporter": "^2.2.1",
     "mocha-yaml-loader": "^1.0.3",
@@ -214,8 +214,8 @@
     "url": "^0.11.4"
   },
   "engines": {
-    "node": "^20 || ^22",
-    "npm": "^9 || ^10 || ^11"
+    "node": "^22",
+    "npm": "^10 || ^11"
   },
   "type": "module",
   "collective": {
